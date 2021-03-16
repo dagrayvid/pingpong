@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pingpong-server
+  labels:
+    app: pingpong
+spec:
+  containers:
+  - name: pingpong-server
+    image: quay.io/dagray/pingpong:server
+    imagePullPolicy: Always
+    command:  ["/server"]
+    args:
+      - "-ca-file=/etc/pingpong/certs/ca.crt"
+      - "-key-file=/etc/pingpong/certs/tls.key"
+      - "-cert-file=/etc/pingpong/certs/tls.crt"
+    env:
+    - name: GRPC_TRACE
+      value: "all"
+    - name: GRPC_VERBOSITY
+      value: "DEBUG"
+    - name: GRPC_GO_LOG_VERBOSITY_LEVEL
+      value: "99"
+    - name: GRPC_GO_LOG_SEVERITY_LEVEL
+      value: "info"
+    volumeMounts:
+      - name: pingpong-server-cert
+        mountPath: "/etc/pingpong/certs"
+        readOnly: true
+  volumes:
+    - name: pingpong-server-cert
+      secret:
+        secretName: pingpong-server-cert

@@ -1,0 +1,34 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pingpong-client
+  labels:
+    app: pingpong-client
+spec:
+  hostNetwork: true
+  dnsPolicy: ClusterFirstWithHostNet
+  containers:
+  - name: pingpong-client
+    image: quay.io/dagray/pingpong:client
+    imagePullPolicy: Always
+    command: ["/client"]
+    args:
+      - "-server=pingpong-service:12021"
+      - "-ca-file=/etc/pingpong/certs/ca.crt"
+    env:
+    - name: GRPC_TRACE
+      value: "all"
+    - name: GRPC_VERBOSITY
+      value: "DEBUG"
+    - name: GRPC_GO_LOG_VERBOSITY_LEVEL
+      value: "99"
+    - name: GRPC_GO_LOG_SEVERITY_LEVEL
+      value: "info"
+    volumeMounts:
+      - name: pingpong-server-cert
+        mountPath: "/etc/pingpong/certs"
+        readOnly: true
+  volumes:
+    - name: pingpong-server-cert
+      secret:
+        secretName: pingpong-server-cert

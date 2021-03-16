@@ -1,0 +1,21 @@
+# Build the manager binary
+FROM golang:1.15.0 AS builder
+
+WORKDIR /workspace
+# Copy the Go Modules manifests
+COPY go.mod go.mod
+COPY go.sum go.sum
+
+# Copy the go source
+COPY cmd cmd
+
+# Build
+RUN go build -o server cmd/server/main.go
+
+FROM registry.access.redhat.com/ubi8/ubi
+WORKDIR /
+COPY --from=builder /workspace/server .
+
+RUN useradd  -r -u 499 nonroot
+RUN getent group nonroot || groupadd -o -g 499 nonroot 
+ENTRYPOINT ["/server"]

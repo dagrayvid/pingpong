@@ -1,0 +1,14 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: pingpong-server-cert
+  namespace: sro-pingpong
+spec:
+  secretName: pingpong-server-cert
+  commonName: pingpong-server
+  dnsNames:
+  - pingpong-service
+  issuerRef:
+    name: pingpong-ca-issuer
+    kind: Issuer
+    group: cert-manager.io
