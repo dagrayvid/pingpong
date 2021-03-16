@@ -1,3 +1,3 @@
 # Pingpong
 
-A gRPC server-client stream demo
+An encrypted gRPC server-client stream demo for running on OpenShift / Kubernetes
