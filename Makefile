@@ -2,6 +2,7 @@ cert:
 	cd certs; ./gen.sh; cd ..
 
 ca-secret:
+	mkdir -p ocp_certs/
 	rm ocp_certs/*
 	openssl genrsa -out ocp_certs/ca.key 2048
 	openssl req -x509 -new -nodes -key ocp_certs/ca.key -subj "/CN=pingpong-ca" -days 10000 -out ocp_certs/ca.crt
