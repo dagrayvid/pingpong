@@ -12,3 +12,16 @@ spec:
     name: pingpong-ca-issuer
     kind: Issuer
     group: cert-manager.io
+---
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: pingpong-client-cert
+  namespace: sro-pingpong
+spec:
+  secretName: pingpong-client-cert
+  commonName: pingpongs-client
+  issuerRef:
+    name: pingpong-ca-issuer
+    kind: Issuer
+    group: cert-manager.io

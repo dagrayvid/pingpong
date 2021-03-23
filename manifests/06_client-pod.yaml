@@ -15,6 +15,8 @@ spec:
     args:
       - "-server=pingpong-service:12021"
       - "-ca-file=/etc/pingpong/certs/ca.crt"
+      - "-key-file=/etc/pingpong/certs/tls.key"
+      - "-cert-file=/etc/pingpong/certs/tls.crt"
     env:
     - name: GRPC_TRACE
       value: "all"
@@ -25,10 +27,10 @@ spec:
     - name: GRPC_GO_LOG_SEVERITY_LEVEL
       value: "info"
     volumeMounts:
-      - name: pingpong-server-cert
+      - name: pingpong-client-cert
         mountPath: "/etc/pingpong/certs"
         readOnly: true
   volumes:
-    - name: pingpong-server-cert
+    - name: pingpong-client-cert
       secret:
-        secretName: pingpong-server-cert
+        secretName: pingpong-client-cert
